@@ -12,10 +12,11 @@ public class ScoreController : MonoBehaviour
     // Je déclare une variable Score qui récupérera la valeur de mon score, je l'initialise à 0
     [SerializeField] private float _score = 0f;
     public float ScoreValue => _score; // je mon _score public c.a.d accessible seulement en lecture aux autres scripts, je nomme cette variable "ScoreValue"
+                                       // CAR je dois la passer a "UIScoreController.cs"
 
     // Je déclare une variable _PisteColor qui récupérera la couleur de ma piste, je l'initialise à "Verte"
-    [SerializeField] private string _PisteColor = "Verte";
-    public string PisteColor => _PisteColor; // je mon _PisteColor public c.a.d accessible seulement en lecture aux autres scripts, je nomme cette variable "PisteColor"
+    [SerializeField] private string _pisteColorCurrent; 
+    // public string PisteColor => _pisteColorCurrent; // je mon _PisteColor public c.a.d accessible seulement en lecture aux autres scripts, je nomme cette variable "PisteColor"
 
     [Header("Point per track color")]
     [SerializeField] private int _pointSecondPisteVerte = 10;
@@ -29,52 +30,64 @@ public class ScoreController : MonoBehaviour
     [SerializeField] private float _timeSecondPisteRouge = 120f;
     [SerializeField] private float _timeSecondPisteNoire = 180f;
 
- 
 
+
+    private void OnEnable() // "OnEnable()" est lu avant le "Update()"
+    {
+
+        GameEventService.OnColorPiste += Score;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "Score" à laquelle est transmisse la valeur contenu dans OnColorPiste   
+    }
 
     // Update is called once per frame
     void Update() // pas mettre dans FixedUpdate meme si mon score depend du temps passé, FixedUpdate() est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
     {
-        Score(TrackColor()); // j'execute ma méthode "Score", qui a besoin d'un parametre string qui est retourné par ma méthode "TrackColor()"
-                             // donc autant lui passer directement en parametre la "TrackColor()"
-
-        // j'appelle "OnCollision" (qui me dit si collision ou pas) qui sur mon eventSystem (de type classe static)
-        // je n'ai pas besoin d'appler cette classe plus haut car elle existe partout donc elle est directement accessible
-        GameEventService.OnCollision?.Invoke(); // j'applle "OnCollision" qui est sur mon script "GameEventSystem.cs" et sa valeur "OnCollision", "?" est neccessaire pour faire une erreur si personne n'est abonné à "OnCollision" | "Invoke" = appeler, déclencher
+        // // j'execute la méthode TrackColor qui me dit en quelle couleur doit etre la piste
+        TrackColor();
     }
 
 
     // méthode qui me dit en quelle couleur de piste (Track) je suis
     // ---------------------------
-    private string TrackColor() // je mets "string" et non pas "void", car ca ne return rien "string", me permet de stocker un string car je fais un return a la fin
+    private void TrackColor()
     {
         // Je créer une variable qui recupere le temps depuis le debut du jeu
         float gameTime = Time.time; // par convention le nom d'une variable avec une maj au début, MAIS pas la car ce son des variable dites locale (déclarée dans la fonction)
-        Debug.Log("Temps depuis le debut du jeu : " + gameTime);
+        // Debug.Log("Temps depuis le debut du jeu : " + gameTime);
+
+        string pisteColorCurrentNew; // je déclare cette variable qui va me servire ensuite pour la comparaison, savoir que j'invoke le GameEventService.cs
 
         if (gameTime < _timeSecondPisteBleu)
         {
-            Debug.Log("Piste Verte");
-            _PisteColor = "Verte";
+            pisteColorCurrentNew = "Verte";
         }
         else if (gameTime < _timeSecondPisteRouge)
         {
-            Debug.Log("Piste Bleu");
-            _PisteColor = "Bleu";
+            pisteColorCurrentNew = "Bleu";
         }
         else if (gameTime < _timeSecondPisteNoire)
         {
-            Debug.Log("Piste Rouge");
-            _PisteColor = "Rouge";
+            pisteColorCurrentNew = "Rouge";
         }
         else // sinon je suis en piste noire
         {
-            Debug.Log("Piste Noire");
-            _PisteColor = "Noire";     
+            pisteColorCurrentNew = "Noire";     
+        }
+        // Debug.Log("pisteColorCurrentNew : " + pisteColorCurrentNew);
+        // Debug.Log("_pisteColorCurrent : " + _pisteColorCurrent);
+
+        // Un event doit être déclenché que quand quelque chose CHANGE, donc pas a toutes les frame (gros pb de CPU sinon)
+        // donc je fais une comparaison pour l'envoyer que quand il change
+        if (_pisteColorCurrent != pisteColorCurrentNew)
+        {
+            // Debug.Log("Invoke");
+            GameEventService.OnColorPiste?.Invoke(pisteColorCurrentNew); // donne l'info a notre GameEventService.cs, il l'Invoke, envoies l’information aux abonnés
         }
 
-        Debug.Log("Piste : " + _PisteColor);
-        return _PisteColor;
+        // enfin je réinitialise _pisteColorCurrent à valeur de pisteColorCurrentNew
+        _pisteColorCurrent = pisteColorCurrentNew;
+
+        // Debug.Log("_pisteColorCurrent : " + _pisteColorCurrent);
+        
     }
 
 
@@ -109,10 +122,16 @@ public class ScoreController : MonoBehaviour
         }
 
         // J'incremente mon score par le nombre de point correspondant a la couleur de la piste
-        // _score += PointPistePerSecond; // abreviation pour dire : _score = _score + PointPistePerSecond;
         // je ne peux pas appler cette méthode dans un FixedUpdate car il est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
         _score += pointPistePerSecond * Time.deltaTime; // abreviation pour dire : _score = _score + PointPistePerSecond * Time.deltaTime;
-        Debug.Log("Score : " + _score);
+        // Debug.Log("Score : " + _score);
+    }
+
+
+    // penser a se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
+    private void OnDestroy()
+    {
+        GameEventService.OnColorPiste -= Score; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
     }
 
 }

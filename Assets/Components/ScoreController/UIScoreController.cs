@@ -23,4 +23,6 @@ public class UIScoreController : MonoBehaviour
         _scoreText.text = "Score : " + Mathf.FloorToInt(score); // Mathf.FloorToInt() : permet d'eviter les decimales, nombre apres la virgule
     }
 
+
+
 }

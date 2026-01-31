@@ -20,90 +20,79 @@ public class AvalancheController : MonoBehaviour
                                                                // script ScoreController, qui contient la "PisteColor" le couleur de ma piste gérer pas sa méthode "TrackColor"
                                                                // ATTENTTION ceci créer une case, je dois y glisser le Game Obj de ma scene contenant mon script "ScoreController.cs"
 
-    [SerializeField] private int _pourcentProgressAvalAuto = 1; // pourcentage de progression de mon avalanche tous les n secondes
+    [Header("% de progression automatique de l'avalanche")]
+    [SerializeField] private float _pourcentProgressAvalAuto = 1f; // pourcentage de progression de mon avalanche tous les n secondes
 
-    [Header("Progression automatique de 1% de l'avalanche, toutes les n seconde" )]
+    [Header("Progression automatique toutes les n seconde")]
     [SerializeField] private float _timeAutoProgressAvalVerte = 8f;
     [SerializeField] private float _timeAutoProgressAvalBleu = 6f;
     [SerializeField] private float _timeAutoProgressAvalRouge = 4f;
     [SerializeField] private float _timeAutoProgressAvalNoire = 2f;
 
     [Header("Progression de l'avalanche a la collision en %")]
-    [SerializeField] private int _progressAvalOnCollisionVerte = 5;
-    [SerializeField] private int _progressAvalOnCollisionBleu = 10;
-    [SerializeField] private int _progressAvalOnCollisionRouge = 20;
-    [SerializeField] private int _progressAvalOnCollisionNoire = 30;
+    [SerializeField] private float _progressAvalOnCollisionVerte = 5f;
+    [SerializeField] private float _progressAvalOnCollisionBleu = 10f;
+    [SerializeField] private float _progressAvalOnCollisionRouge = 20f;
+    [SerializeField] private float _progressAvalOnCollisionNoire = 30f;
 
 
     // Update is called once per frame
     void Update()
     {
+        GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VariablePerPisteColor" à laquelle est transmisse la valeur contenu dans OnColorPiste
 
-        AvalancheProgress(_scoreController.PisteColor); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"
-
-        // j'ecoute dans mon GameEventService si il y a collision de mon player, si oui je lis la fonction "AvalancheProgress()"
-        GameEventService.OnCollision += AvalancheProgress;
+        // VitesseProgressAvalanche(_pourcentProgressAvalAuto, _timeAutoProgressAvalCurrent); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"
     }
 
 
-    // je créer une methode qui calcule la progression de mon avalanche vers mon Player
-    // ca progression varie en fonction de la couleur de la piste
-    private void AvalancheProgress(string pisteColor)
+    // je créer une fonction qui me donne les bonnes variable suivant la couleur de la piste
+    private void VariablePerPisteColor(string pisteColor)
     {
-        // Je créer une variable qui recupere le temps depuis le debut du jeu
-        float gameTime = Time.time; // par convention le nom d'une variable avec une maj au début, MAIS pas la car ce son des variable dites locale (déclarée dans la fonction)
-        Debug.Log("Temps depuis le debut du jeu : " + gameTime);
-
-        float _timeAutoProgressAvalNoireCurrent;
+        float _timeAutoProgressAvalCurrent = 0;
+        float _progressAvalOnCollisionCurrent = 0;
 
         if (pisteColor == "Verte")
         {
-            // coroutine 
-            yield return new WaitForSeconds(_timeAutoProgressAvalVerte);
-            _timeAutoProgressAvalNoireCurrent = _timeAutoProgressAvalNoire;
+            _timeAutoProgressAvalCurrent = _timeAutoProgressAvalVerte;
+            _progressAvalOnCollisionCurrent = _progressAvalOnCollisionVerte;
         }
         else if (pisteColor == "Bleu")
         {
-            // coroutine 
-            yield return new WaitForSeconds(_timeAutoProgressAvalBleu);
-            _timeAutoProgressAvalNoireCurrent = _timeAutoProgressAvalNoire;
+            _timeAutoProgressAvalCurrent = _timeAutoProgressAvalBleu;
+            _progressAvalOnCollisionCurrent = _progressAvalOnCollisionBleu;
 
         }
         else if (pisteColor == "Rouge")
         {
-            // coroutine 
-            yield return new WaitForSeconds(_timeAutoProgressAvalRouge);
-            _timeAutoProgressAvalNoireCurrent = _timeAutoProgressAvalNoire;
+            _timeAutoProgressAvalCurrent = _timeAutoProgressAvalRouge;
+            _progressAvalOnCollisionCurrent = _progressAvalOnCollisionRouge;
         }
         else // (pisteColor == "Noire")
         {
-            // coroutine 
-            yield return new WaitForSeconds(_timeAutoProgressAvalNoire);
-            _timeAutoProgressAvalNoireCurrent = _timeAutoProgressAvalNoire;
+            _timeAutoProgressAvalCurrent = _timeAutoProgressAvalNoire;
+            _progressAvalOnCollisionCurrent = _progressAvalOnCollisionNoire;
         }
 
-        // l'avalanche progresse de _pourcentProgressAvalAuto
-        for (int i = 1f; i <= 100f; i+ _timeAutoProgressAvalNoireCurrent) // valeur de depart de ma variable ; "i < 100" = condition de fin d'incrementation ;  "i++" =  valeur de l'incrementation
-        {
-            Debug.Log(i);        
-        }
+        Debug.Log("Piste : " + pisteColor);
+    }
 
-
-        _avalancheDistance += _colissionDamage; // _avalancheDistance = _avalancheDistance - _colissionDamage;
-                                                // ex : 100-10=90
-
-        // Je créer une variable qui va directement me convertir cette valeur en % de progression de ma barre avalance dans mon UIPlayer
-        // elle progresse proportionellemnt de (_colissionDamage * _avalancheDistance) / 100
-        float ProgressionAvanlancePourcent = (_colissionDamage * _avalancheDistance) / 100;
-
+        void VitesseProgressAvalanche(float pourcentProgress, float timeProgress)
+    {
+        // je dois calculer la vitesse de mon avanche sachant que la formule mathématique est :
+        // vitesse = distance / durée
+        // dans notre cas : vitesse = pourcentage / durée
+        // je vais obtenir une vitesse exprimée en % par seconde
+        // vitesse que je devrais * Time.deltaTime
+        float vitesseAvalanche = 0;
+        vitesseAvalanche = pourcentProgress / timeProgress * Time.deltaTime;
+        Debug.Log("VitesseAval" + vitesseAvalanche);
     }
 
     // penser a se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
     private void OnDestroy()
     {
-        GameEventService.OnCollision -= AvalancheProgress;
+        GameEventService.OnColorPiste -= VariablePerPisteColor; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
     }
 
-
-
 }
+
