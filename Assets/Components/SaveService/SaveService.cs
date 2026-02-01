@@ -28,6 +28,11 @@ public static class SaveService // en faire une class static
 
     // lire les données qui sont sur mon fichier.json
     // -----------------
+    /// <summary>
+    /// Tries to load saveData from disk
+    /// </summary>
+    /// <param name="saveData"> The save Data</param>
+    /// <returns>return True if the data has been found on disk</returns>
     public static bool TryLoad(out SaveData saveData) // verifiez si le fichier.json existe, si oui me le stoker
                                                       // grace a cett methode particuliere qui combiné au "out" renvoie un bool (true si le composant est trouvé) et qui permet en meme temps de recupérer ce composant qui grace au "out" permet de stoker une variable de retour directement dans les argument (choses entre parenthe)
                                                       // dans notre cas il va nous renvoyer "SaveData" si il existe

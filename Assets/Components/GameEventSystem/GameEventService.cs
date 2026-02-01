@@ -48,5 +48,7 @@ public static class GameEventService // cet eventsystem ne va pas etre un script
     public static Action<float> OnCountdownTick; // pour declarer un evenement en c# utiliser les Action static
     
     public static Action<string> OnColorPiste; // stock le nom de ma couleur de piste
+    
+    public static Action<float> OnScore; // stock le score
 
 }

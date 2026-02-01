@@ -785,7 +785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1262476395
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1059,7 +1059,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIScoreController
   _scoreText: {fileID: 1860522201}
-  _scoreController: {fileID: 0}
 --- !u!1 &1771872844
 GameObject:
   m_ObjectHideFlags: 0

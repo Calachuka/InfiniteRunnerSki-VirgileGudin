@@ -1,5 +1,4 @@
 using Components.Data;
-using UnityEditor;
 using UnityEngine;
 
 namespace Components.StateMachine
@@ -46,12 +45,15 @@ namespace Components.StateMachine
     }
 
 
+
+
     // =============================
     // 3) je créer mes différents etats "states"
     // =============================
+    #region class CountdownState
 
     // je créer un etat "CountdownState", compte a rebour pour la lancer le joueur directement dans la partie au chargement
-    // ----------------
+    // ----------------------------------
     public class CountdownState : State // je precise que cette class est un State
     {
         private float _countdownTimer; // je créer une variable _countdownTimer
@@ -91,11 +93,12 @@ namespace Components.StateMachine
         {
             GameEventService.OnCountdownState?.Invoke(false); // je vais chercher mon Action OnGameState dans "GameEventService.cs" et si quelqu'un m'ecoute "?" je la mets a false
         }
-
     }
+    #endregion
 
+    #region class GameState
     // je créer mon etat "GameState" qui est mon etat de jeu qui arrive apres le l'etat "CountdownState"
-    // ----------------
+    // ------------------------------
     public class GameState : State // je precise que cette class est un State
     {
 
@@ -111,12 +114,11 @@ namespace Components.StateMachine
         // j'implement ma methode Enter(); (quand je rentre dans mon etat) crée plus haut (obligatoire)
         public override void Enter()
         {
-            GameEventService.OnGameState?.Invoke(true); // je vais chercher mon Action OnGameState dans "GameEventService.cs" et si quelqu'un m'ecoute "?" je la mets a true
+            GameEventService.OnGameState?.Invoke(true); // j'invoke OnGameState dans "GameEventService.cs" je la mets a true
             // je m'abonne a OnCollision (dans mon eventsystem qui est classe static)
             GameEventService.OnCollision += HandleCollision; // += c'est un delegat, pour executer une methode (fonction) HandleCollision que j'ai ecrite plus bas
             _currentLife = LevelParameters.PlayerLife; // ma vie est égale a mon parametre PlayerLife de LevelParameters créer dans mon scriptableObject "SOLevelParameters.cs"
-
-            
+ 
         }
 
         // j'implement ma methode Update(); (quand mon etat se fait Update) crée plus haut (obligatoire)
@@ -124,7 +126,6 @@ namespace Components.StateMachine
         {
 
         }
-
 
         // j'implement ma methode Exit(); (quand je sort de mon etat) crée plus haut (obligatoire)
         public override void Exit()
@@ -134,7 +135,14 @@ namespace Components.StateMachine
             
         }
 
+
+
+
+
         // methode qui gere mes collisions
+        /// <summary>
+        /// 
+        /// </summary>
         private void HandleCollision()
         {
             _currentLife--; // je perd un point de vie
@@ -149,9 +157,12 @@ namespace Components.StateMachine
         }
     }
 
+    #endregion
+
+    #region class GameOverState
 
     // je créer mon etat "GameOverState" qui est mon etat de jeu quand je perd
-    // ----------------
+    // ---------------------------------
     public class GameOverState : State // je precise que cette class est un State
     {
 
@@ -182,4 +193,6 @@ namespace Components.StateMachine
 
         }
     }
+
+    #endregion
 }

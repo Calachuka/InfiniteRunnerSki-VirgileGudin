@@ -6,6 +6,11 @@ public class UIAvalancheController : MonoBehaviour
 
     [SerializeField] private Slider _SliderBarProgressAvalanche; // je créer un champ pour lui glisser le slider qui gere ma bar de pression de l'avalanche
 
+    private void OnEnable() // "OnEnable()" est lu avant le "Update()"
+    {
+
+        //GameEventService.OnScore += SetScore;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "SetScore" à laquelle est transmis la valeur contenu dans OnScore
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,5 +22,11 @@ public class UIAvalancheController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // penser a se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
+    private void OnDestroy()
+    {
+        //GameEventService.OnScore -= VariablePerPisteColor; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
     }
 }

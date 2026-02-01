@@ -11,8 +11,6 @@ public class ScoreController : MonoBehaviour
 
     // Je déclare une variable Score qui récupérera la valeur de mon score, je l'initialise à 0
     [SerializeField] private float _score = 0f;
-    public float ScoreValue => _score; // je mon _score public c.a.d accessible seulement en lecture aux autres scripts, je nomme cette variable "ScoreValue"
-                                       // CAR je dois la passer a "UIScoreController.cs"
 
     // Je déclare une variable _PisteColor qui récupérera la couleur de ma piste, je l'initialise à "Verte"
     [SerializeField] private string _pisteColorCurrent; 
@@ -35,12 +33,13 @@ public class ScoreController : MonoBehaviour
     private void OnEnable() // "OnEnable()" est lu avant le "Update()"
     {
 
-        GameEventService.OnColorPiste += Score;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "Score" à laquelle est transmisse la valeur contenu dans OnColorPiste   
+        // GameEventService.OnColorPiste += Score;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "Score" à laquelle est transmisse la valeur contenu dans OnColorPiste   
     }
 
     // Update is called once per frame
     void Update() // pas mettre dans FixedUpdate meme si mon score depend du temps passé, FixedUpdate() est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
     {
+        GameEventService.OnColorPiste += Score;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "Score" à laquelle est transmisse la valeur contenu dans OnColorPiste
         // // j'execute la méthode TrackColor qui me dit en quelle couleur doit etre la piste
         TrackColor();
     }
@@ -124,7 +123,11 @@ public class ScoreController : MonoBehaviour
         // J'incremente mon score par le nombre de point correspondant a la couleur de la piste
         // je ne peux pas appler cette méthode dans un FixedUpdate car il est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
         _score += pointPistePerSecond * Time.deltaTime; // abreviation pour dire : _score = _score + PointPistePerSecond * Time.deltaTime;
+
         // Debug.Log("Score : " + _score);
+
+        GameEventService.OnScore?.Invoke(_score); // donne l'info a notre GameEventService.cs, il l'Invoke, envoies l’information aux abonnés
+        
     }
 
 

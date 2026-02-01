@@ -35,21 +35,30 @@ public class AvalancheController : MonoBehaviour
     [SerializeField] private float _progressAvalOnCollisionRouge = 20f;
     [SerializeField] private float _progressAvalOnCollisionNoire = 30f;
 
+    // je declare ces 2 variables qui vont me servir ma methode "VariablePerPisteColor()"
+    private float _timeAutoProgressAvalCurrent = 0;
+    private float _progressAvalOnCollisionCurrent = 0;
+
+
+    private void OnEnable() // "OnEnable()" est lu avant le "Update()"
+    {
+        GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VariablePerPisteColor" à laquelle est transmisse la valeur contenu dans OnColorPiste
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VariablePerPisteColor" à laquelle est transmisse la valeur contenu dans OnColorPiste
-
-        // VitesseProgressAvalanche(_pourcentProgressAvalAuto, _timeAutoProgressAvalCurrent); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"
+        
+        
+        VitesseProgressAvalanche(_pourcentProgressAvalAuto, _timeAutoProgressAvalCurrent); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"
     }
 
 
     // je créer une fonction qui me donne les bonnes variable suivant la couleur de la piste
     private void VariablePerPisteColor(string pisteColor)
     {
-        float _timeAutoProgressAvalCurrent = 0;
-        float _progressAvalOnCollisionCurrent = 0;
+
 
         if (pisteColor == "Verte")
         {
@@ -76,7 +85,7 @@ public class AvalancheController : MonoBehaviour
         Debug.Log("Piste : " + pisteColor);
     }
 
-        void VitesseProgressAvalanche(float pourcentProgress, float timeProgress)
+    private void VitesseProgressAvalanche(float pourcentProgress, float timeProgress)
     {
         // je dois calculer la vitesse de mon avanche sachant que la formule mathématique est :
         // vitesse = distance / durée
