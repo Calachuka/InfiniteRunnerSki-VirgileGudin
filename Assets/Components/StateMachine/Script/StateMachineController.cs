@@ -1,6 +1,13 @@
 using Components.Data;
 using UnityEngine;
 
+// --- BUT ---
+// il Créer UNE nouvelle instance de StateMachine, "_stateMachine" class StateMachine qui elle, se trouve dans StateMachine.cs
+// au demarrage du jeu donc dans private void Awake(), j'initialise mon jeu au state "CountdownState" 
+// que je donne ma nouvelle instance de "StateMachine", donc _stateMachine
+// j'appelle aussi le Update() nouvelle instance de "StateMachine", donc l'Update de mon "CurrentState",
+// -----------
+
 namespace Components.StateMachine
 {
     public class StateMachineController : MonoBehaviour
@@ -18,14 +25,14 @@ namespace Components.StateMachine
                              // Start() : appelé une seule fois,
                              // Update() : appelé chaque frame.
         {
-            _stateMachine = new StateMachine(); // j'attribue à _stateMachine une instance de ma class StateMachine
+            _stateMachine = new StateMachine(); // j'attribue à _stateMachine une nouvelle instance de ma class StateMachine qui se trouve dans StateMachine.cs
 
             // au demarrage du jeu j'initialise mon jeu au state "CountdownState" au quel je donne une instance de "StateMachine", donc _stateMachine
             var initialState = new CountdownState(_stateMachine, _levelParameters); // donc ce créer une variable "initialState" a la quelle je donne une nouvelle instance de "CountdownState" de mon instance _stateMachine
             _stateMachine.ChangeState(initialState); // j'execute alors la fonction "ChangeState" (avec commme argument "initialState"), qui se trouve dans "StateMachine.cs" ceci en executant ma StateMachine grace son instance nommée "_stateMachine" 
         }
 
-        public void Update() => _stateMachine.Update(); // j'appelle aussi le Update() de ma StateMachine, don l'Update de mon "CurrentState", ceci grace a son instance _stateMachine, ceci en fesant ce raccoucit
+        public void Update() => _stateMachine.Update(); // j'appelle aussi le Update() de ma StateMachine, donc l'Update de mon "CurrentState", ceci grace a son instance _stateMachine, ceci en fesant ce raccoucit
                                                         // meme chose que :
                                                         /* 
                                                         public void Update()
