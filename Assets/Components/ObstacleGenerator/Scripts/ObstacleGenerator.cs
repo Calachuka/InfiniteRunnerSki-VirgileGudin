@@ -62,6 +62,15 @@ public class ObstacleGenerator : MonoBehaviour
     // retourne une valeur directement
     // Alors => est parfait, ca simplifie la lecture du code
     private ChunkController LastChunk => _activeChunks[_activeChunks.Count - 1];
+    /* s'ecrit aussi :
+    private ChunkController LastChunk
+    {
+        get // Property get valeur calculée à chaque accès, adaptée pour les listes dynamiques comme _activeChunks.
+        {
+            return _activeChunks[_activeChunks.Count - 1];
+        }
+    }
+    */
 
     private int _lastChunkIndex = 0; // je créer une variable pour recuperer le dernier nun de chunk instantiate // pour que dans le random il n' y ai pas 2 fois de suite le meme chunk
 
@@ -84,20 +93,20 @@ public class ObstacleGenerator : MonoBehaviour
 
         AddBaseChunks(); // méthode (ou fonction) qui gère la création des chunks au lancement (au start)
 
-        // je créer une class pour m'abonner a la methode "HandleGameState" créee en bas
-        GameEventService.OnGameState += HandleGameState;
+        // je j'ecoute le moment ou le jeu passe en "GameState"
+        GameEventService.OnGameState += HandleGameState; // je m'abonne à mon GameEventService.cs qui recupère la valeur contenu dans "OnGameState" quand elle est envoyée, alors j'exécute la fonction "HandleGameState"
     }
 
     // je me suis abonner juste au dessus donc je DOIS me desabonner
     private void OnDestroy()
     {
-        GameEventService.OnGameState -= HandleGameState;
+        GameEventService.OnGameState -= HandleGameState; // je me désabonne de mon GameEventService.cs
     }
 
-    // je créer qui dit que c'est enabled si je rentre dans le State Enter()
+    // je créer cette méthode qui dit que c'est enabled si je rentre dans le State Enter()
     private void HandleGameState(bool enterState) // si _enabled = false, je sors du state
     {
-        _enabled = enterState; 
+        _enabled = enterState; // _enabled sert à ton script pour contrôler si le défilement des chunks doit être actif ou non.
     }
 
     // gere la position d'instantiation de mes chhunk

@@ -67,10 +67,10 @@ namespace Components.StateMachine
     // =============================
     // 3) je créer mes différents etats "states"
     // =============================
-    #region class CountdownState
+
 
     // je créer un etat "CountdownState", compte a rebour pour la lancer le joueur directement dans la partie au chargement
-    // ----------------------------------
+    // ==================================
     public class CountdownState : State // je precise que cette class est un State
     {
         private float _countdownTimer; // je créer une variable _countdownTimer
@@ -115,18 +115,18 @@ namespace Components.StateMachine
             GameEventService.OnCountdownState?.Invoke(false); // je previens le "GameEventService.cs" que je sors du CountdownState
         }
     }
-    #endregion
 
 
 
 
-    #region class GameState
+
     // je créer mon etat "GameState" qui est mon etat de jeu qui arrive apres le l'etat "CountdownState"
-    // ------------------------------
+    // =============================
     public class GameState : State // je precise que cette class est un State
     {
 
         private int _currentLife;
+
 
         // je créer un constructeur de class, qui créer une instance de GameState et prend comme argument "stateMachine"
         // base(stateMachine) signifie qu'il apple le constcteur de base (creer dans "public abstract class State" creer au dessus) pour mettre stateMachine dans stateMachine
@@ -176,17 +176,15 @@ namespace Components.StateMachine
             }
 
         }
+
     }
 
-    #endregion
 
 
 
-
-    #region class GameOverState
 
     // je créer mon etat "GameOverState" qui est mon etat de jeu quand je perd
-    // ---------------------------------
+    // ================================
     public class GameOverState : State // je precise que cette class est un State
     {
 
@@ -218,5 +216,4 @@ namespace Components.StateMachine
         }
     }
 
-    #endregion
 }

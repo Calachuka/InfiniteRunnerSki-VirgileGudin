@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class AvalancheController : MonoBehaviour
@@ -14,6 +15,8 @@ public class AvalancheController : MonoBehaviour
 
     [SerializeField] private float _avalancheDistance = 100f;
     [SerializeField] private float _colissionDamage = 10f;
+    private float CurrentAvalanche = 0;
+
 
     [SerializeField] private ScoreController _scoreController; // pour récupérer la couleur de ma piste
                                                                // je creer une instance (ou référence) au script ScoreController que je nomme _scoreController 
@@ -35,13 +38,15 @@ public class AvalancheController : MonoBehaviour
     [SerializeField] private float _progressAvalOnCollisionRouge = 20f;
     [SerializeField] private float _progressAvalOnCollisionNoire = 30f;
 
-    // je declare ces 2 variables qui vont me servir ma methode "VariablePerPisteColor()"
-    private float _timeAutoProgressAvalCurrent = 0;
-    private float _progressAvalOnCollisionCurrent = 0;
+    // je declare ces 2 variables current comme valeur au départ du jeu
+    private float _timeAutoProgressAvalCurrent = _timeAutoProgressAvalVerte; // et je l'initialise à sa valeur de départ (piste verte)
+    private float _progressAvalOnCollisionCurrent = _progressAvalOnCollisionVerte; // et je l'initialise à sa valeur de départ (piste verte)
 
 
     private void OnEnable() // "OnEnable()" est lu avant le "Update()"
     {
+        
+        GameEventService.OnCollision += CollisionProgressAvanlanche;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "CollisionProgressAvanlanche" à laquelle est transmisse la valeur contenu dans OnCollision
         GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VariablePerPisteColor" à laquelle est transmisse la valeur contenu dans OnColorPiste
     }
 
@@ -49,16 +54,18 @@ public class AvalancheController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
-        VitesseProgressAvalanche(_pourcentProgressAvalAuto, _timeAutoProgressAvalCurrent); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"
+
+        VitesseProgressAvalanche(_pourcentProgressAvalAuto, _timeAutoProgressAvalCurrent); // je recupere la variable PisteColor qui est dans mon script "ScoreController.cs"      
+
     }
 
 
-    // je créer une fonction qui me donne les bonnes variable suivant la couleur de la piste
-    private void VariablePerPisteColor(string pisteColor)
-    {
 
+
+    // méthode qui me donne les bonnes valeurs suivant la couleur de la piste, elle prend argument la couleur de la piste
+    // elle me return ces valeurs
+    private float VariablePerPisteColor(string pisteColor)
+    {
 
         if (pisteColor == "Verte")
         {
@@ -81,27 +88,50 @@ public class AvalancheController : MonoBehaviour
             _timeAutoProgressAvalCurrent = _timeAutoProgressAvalNoire;
             _progressAvalOnCollisionCurrent = _progressAvalOnCollisionNoire;
         }
-
         Debug.Log("Piste : " + pisteColor);
+
+        return _timeAutoProgressAvalCurrent;
+        return _progressAvalOnCollisionCurrent;
     }
 
-    private void VitesseProgressAvalanche(float pourcentProgress, float timeProgress)
+
+
+    // methode calcule la vitesse de progression de mon avalanche
+    private void VitesseAutoAvalanche(float pourcentProgressAvalAuto, float timeAutoProgressAvalCurrent)
     {
         // je dois calculer la vitesse de mon avanche sachant que la formule mathématique est :
         // vitesse = distance / durée
-        // dans notre cas : vitesse = pourcentage / durée
-        // je vais obtenir une vitesse exprimée en % par seconde
-        // vitesse que je devrais * Time.deltaTime
-        float vitesseAvalanche = 0;
-        vitesseAvalanche = pourcentProgress / timeProgress * Time.deltaTime;
-        Debug.Log("VitesseAval" + vitesseAvalanche);
+        // dans notre cas : vitesse = pourcentage / durée (de 1% toutes les 8 seconde) donc 1 / 8 = 0,125%parseconde
+        // je vais obtenir une vitesse exprimée en % par 
+        // vitesse que je devrais * Time.deltaTime pour que ce soit seconde/frame
+
+        float vitesseAutoAvalanche = 0; // je declare et initialise
+        vitesseAutoAvalanche = pourcentProgressAvalAuto / timeAutoProgressAvalCurrent * Time.deltaTime; // Time.deltaTime temps ecoulé entre 2 frames, Time.deltaTime est toujours exprimé en secondes.
+        Debug.Log("VitesseAval" + vitesseAutoAvalanche);
     }
 
-    // penser a se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
-    private void OnDestroy()
+
+
+    // methode qui additionne progressAvalOnCollisionCurrent et vitesseAutoAvalanche
+    private void CollisionProgressAvanlanche(progressAvalOnCollisionCurrent, vitesseAutoAvalanche)
+    {
+        progressTotalAvalanche = progressAvalOnCollisionCurrent + vitesseAutoAvalanche;
+
+    }
+
+
+
+
+
+// penser a se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
+private void OnDestroy()
     {
         GameEventService.OnColorPiste -= VariablePerPisteColor; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
+        GameEventService.OnCollision -= CollisionProgressAvanlanche;// je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
     }
 
+
+
 }
+*/
 
