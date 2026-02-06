@@ -32,7 +32,7 @@ namespace Components.StateMachine
             _stateMachine.ChangeState(initialState); // j'execute alors la fonction "ChangeState" (avec commme argument "initialState"), qui se trouve dans "StateMachine.cs" ceci en executant ma StateMachine grace son instance nommée "_stateMachine" 
         }
 
-        public void Update() => _stateMachine.Update(); // j'appelle aussi le Update() de ma StateMachine, donc l'Update de mon "CurrentState", ceci grace a son instance _stateMachine, ceci en fesant ce raccoucit
+        public void Update() => _stateMachine.Update(); // j'appelle aussi le Update() de ma StateMachine (dans StateMachine.cs), donc l'Update de mon "CurrentState", ceci grace a son instance _stateMachine, ceci en fesant ce raccoucit
                                                         // meme chose que :
                                                         /* 
                                                         public void Update()

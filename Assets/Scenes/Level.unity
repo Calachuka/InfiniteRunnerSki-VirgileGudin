@@ -547,7 +547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1067573920}
-  - component: {fileID: 1067573919}
+  - component: {fileID: 1067573921}
   m_Layer: 0
   m_Name: ColorPiste
   m_TagString: Untagged
@@ -555,18 +555,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1067573919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1067573918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e22786ac4536f4448651d2c853bccc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PisteColorChange
 --- !u!4 &1067573920
 Transform:
   m_ObjectHideFlags: 0
@@ -582,6 +570,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1067573921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067573918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e22786ac4536f4448651d2c853bccc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorPisteController
+  _pisteColorCurrent: 
+  _timeSecondPisteVerte: 0
+  _timeSecondPisteBleu: 5
+  _timeSecondPisteRouge: 10
+  _timeSecondPisteNoire: 15
 --- !u!1 &1249643643
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,18 +631,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd353ec4f70709d4cacfe0511a1454a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AvalancheController
-  _avalancheDistance: 100
-  _colissionDamage: 10
-  _scoreController: {fileID: 0}
-  _pourcentProgressAvalAuto: 1
-  _timeAutoProgressAvalVerte: 8
-  _timeAutoProgressAvalBleu: 6
-  _timeAutoProgressAvalRouge: 4
-  _timeAutoProgressAvalNoire: 2
-  _progressAvalOnCollisionVerte: 5
-  _progressAvalOnCollisionBleu: 10
-  _progressAvalOnCollisionRouge: 20
-  _progressAvalOnCollisionNoire: 30
 --- !u!1 &1576312440
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,15 +729,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreController
   _score: 0
-  _pisteColorCurrent: 
   _pointSecondPisteVerte: 10
   _pointSecondPisteBleu: 25
   _pointSecondPisteRouge: 50
   _pointSecondPisteNoire: 100
-  _timeSecondPisteVerte: 0
-  _timeSecondPisteBleu: 1
-  _timeSecondPisteRouge: 2
-  _timeSecondPisteNoire: 3
 --- !u!1 &1823374261
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +809,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.StateMachine.StateMachineController
   _levelParameters: {fileID: 11400000, guid: 7e6b09bf41fc02d408ef64438804da23, type: 2}
+--- !u!1 &1928676849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1928676850}
+  m_Layer: 0
+  m_Name: GameTime
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1928676850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928676849}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.77713, y: 0, z: 0.93237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2089879830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,5 +1247,6 @@ SceneRoots:
   - {fileID: 1831354112}
   - {fileID: 2105078253}
   - {fileID: 1249643644}
+  - {fileID: 1928676850}
   - {fileID: 1602118349}
   - {fileID: 1067573920}

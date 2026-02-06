@@ -1,9 +1,9 @@
+using Components.StateMachine;
 using NUnit.Framework;
 using System.Net;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
-public class ScoreController : MonoBehaviour
+public class ColorPisteController : MonoBehaviour
 {
     // ********** BUT **********
     // vu que dans le jeu score et avalanche dependent de la couleur de la piste
@@ -22,12 +22,30 @@ public class ScoreController : MonoBehaviour
     [SerializeField] private float _timeSecondPisteRouge = 120f;
     [SerializeField] private float _timeSecondPisteNoire = 180f;
 
+    private bool _isGameStart = false;  // je créer une variable savoir quand quand mon jeu est lancé, pour caluler mes secondes qu'a partir de ce moment là
+
+
+    private void OnEnable() // "OnEnable()" est lu avant le "Update()"
+    {
+        // je m'abonne dans le OnEnable(), car a partir de maintenant il écoute et va éxécuter Score, dès qu'il y aura un event
+        GameEventService.OnGameState += GameStart; // je m'abonne à OnGameState pour savoir récupérer son bool, a changement de sa valeur j'execute GameStart en lui passant le bool
+    }
 
 
     // Update is called once per frame
     void Update() // pas mettre dans FixedUpdate meme si mon score depend du temps passé, FixedUpdate() est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
     {
+        if (!_isGameStart) // tant que _isGameStarted est false
+            return; // je retun au début de mon Update et ne lis pas la suite
+
         TrackColor();
+    }
+
+
+    // je suis obligé de créer une méthode, pour attribuer la valeur de mon bool à _isGameStart (initialisé a false plus haut)
+    private void GameStart(bool isGameStart)
+    {
+        _isGameStart = isGameStart;
     }
 
 

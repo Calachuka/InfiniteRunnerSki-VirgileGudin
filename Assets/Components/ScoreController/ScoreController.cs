@@ -1,3 +1,4 @@
+using Components.StateMachine;
 using UnityEngine;
 
 namespace Test
@@ -25,12 +26,13 @@ namespace Test
                                               // CAR _pointSecondPisteVerte n’est pas encore initialisé à ce niveau,
                                               // il sera initialisé qu'a partir du Awake ou du Start
 
-
+        private bool _isGameStart = false;  // je créer une variable pour lancer mon score que quand mon jeu est lancé
 
         private void OnEnable() // "OnEnable()" est lu avant le "Update()"
         {
             // je m'abonne dans le OnEnable(), car a partir de maintenant il écoute et va éxécuter Score, dès qu'il y aura un event
             GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "Score" à laquelle est transmisse la valeur contenu dans OnColorPiste   
+            GameEventService.OnGameState += GameStart; // je m'abonne à OnGameState pour savoir récupérer son bool, a changement de sa valeur j'execute GameStart en lui passant le bool
         }
 
 
@@ -45,9 +47,17 @@ namespace Test
         // Update is called once per frame
         void Update() // pas mettre dans FixedUpdate meme si mon score depend du temps passé, FixedUpdate() est réservé à la physique, utiliser "Time.deltaTime" pour compenser cela
         {
+            if (!_isGameStart) // tant que _isGameStarted est false
+                return; // je retun au début de mon Update et ne lis pas la suite
 
-            // VariablePerPisteColor(); // j'execute la méthode VariablePerPisteColor qui me return la valeur de la variable suivant la couleur de la piste
-            Score(_pointSecondPisteCurrent); // j'execute la méthode Score, et lui donne comme argument _pointSecondPisteCurrent
+            Score(_pointSecondPisteCurrent);
+        }
+
+
+        // je suis obligé de créer une méthode, pour attribuer la valeur de mon bool à _isGameStart (initialisé a false plus haut)
+        private void GameStart(bool isGameStart)
+        {
+            _isGameStart = isGameStart;
         }
 
 
@@ -56,6 +66,7 @@ namespace Test
         // --------------------------------------
         private void VariablePerPisteColor(string pisteColor)
         {
+
             if (pisteColor == "Verte")
             {
                 _pointSecondPisteCurrent = _pointSecondPisteVerte;
@@ -74,6 +85,7 @@ namespace Test
             }
             Debug.Log("Piste : " + pisteColor);
             Debug.Log("_pointSecondPisteCurrent : " + _pointSecondPisteCurrent);
+
         }
 
 
@@ -94,10 +106,11 @@ namespace Test
         }
 
 
-        // penser à se desabonner OnDestroy() c 'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
+        // penser à se desabonner OnDestroy() c'est bien car quittera l'écoute a la fin de la partie (sinon elle peut rester en memoire plusieur parties)
         private void OnDestroy()
         {
             GameEventService.OnColorPiste -= VariablePerPisteColor; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
+            GameEventService.OnGameState -= GameStart;
         }
 
     }

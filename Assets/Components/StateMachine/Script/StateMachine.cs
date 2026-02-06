@@ -1,7 +1,9 @@
 using Components.Data;
+using Test;
 using UnityEngine;
 
 // --- BUT ---
+// cours : Accompagnement M3 S1
 // - gere logique du jeu, enchainement et initialisation des différents states
 // Connaître l’état courant
 // Gérer les transitions
