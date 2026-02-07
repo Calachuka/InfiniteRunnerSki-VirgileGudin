@@ -1,4 +1,3 @@
-using Components.StateMachine;
 using UnityEngine;
 
 namespace Test
@@ -101,7 +100,8 @@ namespace Test
 
             // Debug.Log("Score : " + _score);
 
-            GameEventService.OnScore?.Invoke(_score); // donne l'info a notre GameEventService.cs, il l'Invoke, envoies l’information aux abonnés
+            // je donne _score au GameEventService.cs, je l'Invoke
+            GameEventService.OnScore?.Invoke(_score); 
 
         }
 

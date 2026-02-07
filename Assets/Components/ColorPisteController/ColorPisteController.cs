@@ -23,12 +23,15 @@ public class ColorPisteController : MonoBehaviour
     [SerializeField] private float _timeSecondPisteNoire = 180f;
 
     private bool _isGameStart = false;  // je créer une variable savoir quand quand mon jeu est lancé, pour caluler mes secondes qu'a partir de ce moment là
+    private float _isGameTime = 0f;  // je créer une variable pour initialiser, mon GameTime à 0
+
 
 
     private void OnEnable() // "OnEnable()" est lu avant le "Update()"
     {
         // je m'abonne dans le OnEnable(), car a partir de maintenant il écoute et va éxécuter Score, dès qu'il y aura un event
         GameEventService.OnGameState += GameStart; // je m'abonne à OnGameState pour savoir récupérer son bool, a changement de sa valeur j'execute GameStart en lui passant le bool
+        GameEventService.OnGameTime += GameTime; // je m'abonne à OnGameState pour savoir récupérer le temps en float, a changement de sa valeur j'execute GameStart en lui passant le bool
     }
 
 
@@ -42,10 +45,16 @@ public class ColorPisteController : MonoBehaviour
     }
 
 
-    // je suis obligé de créer une méthode, pour attribuer la valeur de mon bool à _isGameStart (initialisé a false plus haut)
+    // je suis obligé de créer une méthode, juste pour attribuer la valeur de mon bool à _isGameStart (initialisé a false plus haut)
     private void GameStart(bool isGameStart)
     {
         _isGameStart = isGameStart;
+    }
+    
+    // je suis obligé de créer une méthode, juste pour attribuer la valeur de mon float à _isGameTime (initialisé a 0 plus haut)
+    private void GameTime(float isGameTime)
+    {
+        _isGameTime = isGameTime;
     }
 
 
@@ -53,8 +62,8 @@ public class ColorPisteController : MonoBehaviour
     // ---------------------------
     private void TrackColor()
     {
-        // Je créer une variable qui recupere le temps depuis le debut du jeu
-        float gameTime = Time.time; // par convention le nom d'une variable avec une maj au début, MAIS pas la car ce son des variable dites locale (déclarée dans la fonction)
+        // Je créer une variable qui recupere le temps depuis le debut de ma partie
+        float gameTime = _isGameTime;
         // Debug.Log("Temps depuis le debut du jeu : " + gameTime);
 
         string pisteColorCurrentNew; // je déclare cette variable qui va me servire ensuite pour la comparaison, savoir que j'invoke le GameEventService.cs
@@ -83,6 +92,7 @@ public class ColorPisteController : MonoBehaviour
         if (_pisteColorCurrent != pisteColorCurrentNew)
         {
             // Debug.Log("Invoke");
+            Debug.Log("gameTime : " + gameTime);
             GameEventService.OnColorPiste?.Invoke(pisteColorCurrentNew); // donne l'info a notre GameEventService.cs, il l'Invoke, envoies l’information aux abonnés
         }
 

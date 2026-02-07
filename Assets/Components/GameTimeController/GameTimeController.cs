@@ -1,11 +1,18 @@
 using UnityEngine;
-
+// ****** A FAIRE *****************
+// noter les différents maniere de passer des variable d'un script a un autre service.locator, scritable obj, ...
+// demander a montreal si bonne solution de m'abonner OnGameState dans mon ScoreContoller.cs pour savoir quand ma scene mon GameState commence
+// et ainsi commencer a calculer le score
+// n'aurais-je pas du plutot appeler le scoreContoller dans mon GameState d'une maniere ou d'une autre, mais je sais pas trop comment ?
+// qu'avez vous fait, lequel vous emble le plus logique ? merci
+// voici mon script ScoreContoller.cs
+// ********************************
 public class GameTimeController : MonoBehaviour
 {
     
-    private float _gameTimer = 0f; // 1- je déclare une variable privée
+    private float _gameTime = 0f; // 1- je déclare une variable privée
     // puis je la rend public en lecture, pour que les autres scripts puissent la lire et je nomme cette varaible GameTimer
-    public float GameTimer => _gameTimer;
+    public float GameTime => _gameTime;
 
 
     private bool _isGameStart = false;  // je créer une variable pour lancer mon score que quand mon jeu est lancé
@@ -22,7 +29,10 @@ public class GameTimeController : MonoBehaviour
         if (!_isGameStart) // tant que _isGameStarted est false
         return; // je retun au début de mon Update et ne lis pas la suite
 
-        _gameTimer += Time.deltaTime;
+        _gameTime += Time.deltaTime;
+
+        // je donne _score au GameEventService.cs, je l'Invoke
+        GameEventService.OnGameTime?.Invoke(_gameTime);
     }
 
     // je suis obligé de créer une méthode, pour attribuer la valeur de mon bool à _isGameStart (initialisé a false plus haut)
@@ -32,7 +42,7 @@ public class GameTimeController : MonoBehaviour
 
         if (isGameStart)
         {
-            _gameTimer = 0f; // reset au début de la partie
+            _gameTime = 0f; // reset au début de la partie
         }
     }
 
