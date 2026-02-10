@@ -58,7 +58,7 @@ public class AvalancheController : MonoBehaviour
     private void OnEnable() // "OnEnable()" est lu avant le "Update()"
     {
         GameEventService.OnColorPiste += VariablePerPisteColor;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VariablePerPisteColor" à laquelle est transmisse la valeur contenu dans OnColorPiste
-        // GameEventService.OnCollision += IsOnCollision;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VitesseAvanlancheAndOnCollision" à laquelle est transmisse la valeur contenu dans OnCollision
+        GameEventService.OnCollision += AvalancheOncollision;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "VitesseAvanlancheAndOnCollision" à laquelle est transmisse la valeur contenu dans OnCollision
         GameEventService.OnGameState += GameStart; // je m'abonne à OnGameState pour savoir transmettre son bool, au changement de sa valeur et j'executant GameStart
     }
 
@@ -110,7 +110,7 @@ public class AvalancheController : MonoBehaviour
     }
 
 
-    // methode calcule la vitesse de progression de mon avalanche
+    // methode calcule la vitesse de progression automatique de mon avalanche (ne prend pas en compte les collisions)
     private void VitesseAvalanche(float pourcentProgressAvalAuto, float timeAutoProgressAvalCurrent)
     {
         // je dois donc calculer la vitesse de mon avanche sachant que la formule mathématique est :
@@ -128,6 +128,13 @@ public class AvalancheController : MonoBehaviour
     }
 
 
+    // methode appelée en cas de collision : reccupere _currentAvalanche à laquelle elle ajoute le % de dégat de collision
+    private void AvalancheOncollision() // pas besoin de parametre car OnCollision ne fais une impulsion, qui déclanche la fonction
+    {
+        _currentAvalanche += _avalColissionDamageCurrent; // abreviation pour dire : _currentAvalanche = _currentAvalanche + _avalColissionDamageCurrent
+    }
+
+
 
 
 
@@ -136,7 +143,7 @@ public class AvalancheController : MonoBehaviour
     private void OnDestroy()
     {
         GameEventService.OnColorPiste -= VariablePerPisteColor; // je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
-        // GameEventService.OnCollision -= CollisionProgressAvanlanche;// je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
+        GameEventService.OnCollision -= AvalancheOncollision;// je me désabonne de mon GameEventService.cs (OBLIGATOIRE)
         GameEventService.OnGameState -= GameStart; // je m'abonne à OnGameState pour savoir récupérer son bool, a changement de sa valeur j'execute GameStart en lui passant le bool
     }
 
