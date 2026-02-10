@@ -4,6 +4,20 @@ namespace Test
 {
     public class ScoreController : MonoBehaviour
     {
+        // ****** A FAIRE *****************
+        // demander a montreal 
+        /* 
+        Question d'organisation de code : est-ce la bonne solution :
+        voilà pour commencer à calculer mon score au lancement de l'état "GameState"
+        J'ai procédé ainsi :
+        dans mon script ScoreContoller.cs
+        je me suis abonné à mon GameEventService.cs, afin de lancer le calcule du score au monment ou l'état "GameState" passe a true
+        mais n'aurais-je pas pu faire quelque chose qui par exemple "appelais la fonction de calcule de de score" directement dans la class "public class GameState : State" ?
+        un peu comme le calcule de la vie en fonction des collision, comme l'avais fait Yona ?
+        merci :)
+        */
+        // ********************************
+
         // ********** BUT **********
         // chaque seconde passée sur la piste mon score augmente
         // ceci de maniere continue et sans à-coup donc dans le Update

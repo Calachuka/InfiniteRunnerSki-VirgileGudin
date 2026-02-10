@@ -1,12 +1,5 @@
 using UnityEngine;
-// ****** A FAIRE *****************
-// noter les différents maniere de passer des variable d'un script a un autre service.locator, scritable obj, ...
-// demander a montreal si bonne solution de m'abonner OnGameState dans mon ScoreContoller.cs pour savoir quand ma scene mon GameState commence
-// et ainsi commencer a calculer le score
-// n'aurais-je pas du plutot appeler le scoreContoller dans mon GameState d'une maniere ou d'une autre, mais je sais pas trop comment ?
-// qu'avez vous fait, lequel vous emble le plus logique ? merci
-// voici mon script ScoreContoller.cs
-// ********************************
+
 public class GameTimeController : MonoBehaviour
 {
     

@@ -51,4 +51,6 @@ public static class GameEventService // cet eventsystem ne va pas etre un script
 
     public static Action<float> OnGameTime; // stock le GameTimer
 
+    public static Action<float> OnCurrentAvalanche; // stock la progression de mon avalanche
+
 }

@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177462bdec4255f4e8b0330634862107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAvalancheController
-  _SliderBarProgressAvalanche: {fileID: 1155799862}
+  _sliderBarProgressAvalanche: {fileID: 1155799862}
 --- !u!114 &1155799862
 MonoBehaviour:
   m_ObjectHideFlags: 0

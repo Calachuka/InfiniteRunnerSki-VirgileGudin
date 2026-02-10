@@ -11,15 +11,9 @@ public class UIScoreController : MonoBehaviour
 
         GameEventService.OnScore += SetScore;  // je m'abonne à mon GameEventService.cs et j'exécute la fonction "SetScore" à laquelle est transmis la valeur contenu dans OnScore
     }
-    /*
-    // Update is called once per frame
-    void Update()
-    {
-        SetScore(_scoreController.ScoreValue); // je recupere la variable ScoreValue qui est dans mon script "ScoreController.cs"
-    }
-    */
 
-    // je créer une methode qui ecrit le text du text mesh pro de mon canvas
+    // je créer un méthode SetScore à laquelle je transmet le score, le formate pour l'affichage, 
+    // et attribut ce résultat à _scoreText.text (le text du text mesh pro de mon canvas)
     private void SetScore(float score) // "Set" signifie : définir / attribuer / fixer
     {
         // _scoreText.text = "Score :" + score; // _scoreText.text = le composant text de l'obj _scoreText glissé dans ma case
