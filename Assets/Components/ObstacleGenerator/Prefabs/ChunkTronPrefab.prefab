@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 1431514652092420454}
   - component: {fileID: 4883979006204247663}
   - component: {fileID: 7418288201921349385}
+  - component: {fileID: 497538201118777648}
   m_Layer: 0
   m_Name: piste
   m_TagString: Untagged
@@ -115,7 +116,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 632583b89f4d8a94baa8c0f9d47bbfda, type: 2}
+  - {fileID: 2100000, guid: 4f0c458d228a5a8429f307d971538906, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -160,6 +161,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &497538201118777648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024309401043661643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9702a271c97cd64ca032efc4a0de56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChunkColorPiste
+  _materialVerte: {fileID: 2100000, guid: 4f0c458d228a5a8429f307d971538906, type: 2}
+  _materialBleu: {fileID: 2100000, guid: 69802301c484d724f9f333d1247ad518, type: 2}
+  _materialRouge: {fileID: 2100000, guid: 3ee4fb68dadf2ef41a873e2efda16c39, type: 2}
+  _materialNoire: {fileID: 2100000, guid: b0c13b9bffdb74a4aafe07fdb4fb194d, type: 2}
 --- !u!1 &2503057344738107700
 GameObject:
   m_ObjectHideFlags: 0
