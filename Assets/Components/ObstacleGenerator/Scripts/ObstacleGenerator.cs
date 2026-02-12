@@ -18,9 +18,16 @@ public class ObstacleGenerator : MonoBehaviour
     // et glisser dans la case apparut de dans l'inspector, le prefab contenant le script ChunkController.cs, prefab qui n 'est pourtant pas encore instancier dans ma scene 
     [SerializeField] private ChunkController[] _chunkPrefabs; // array de mes chunks, avantage m'evite de faire par la suite _potionPrefab.GetComponent pour recupérer le script et plus besoin de mettre de script ChunkController.cs a mes autres prefabs
 
-    [Header("Parameters")]
-    [SerializeField] private float _translationSpeed = 1f; // vitesse de translation
-                                                            // [SerializeField] permet de créer un champ dans l'inspector meme si ma variable est privée
+    [Header("Speed Parameters")]
+    [SerializeField] private float _translationSpeedVerte = 3f; // vitesse de translation en piste Verte
+    [SerializeField] private float _translationSpeedBleu = 5f; // vitesse de translation en piste Bleu
+    [SerializeField] private float _translationSpeedRouge = 7f; // vitesse de translation en piste Rouge
+    [SerializeField] private float _translationSpeedNoire = 9f; // vitesse de translation en piste Noire
+
+    private float _translationSpeedCurrent; // je déclare une variable _translationSpeedCurrent, qui va me servir plus bas
+                                            // je 'initialiserais dans le start : _translationSpeedCurrent = _translationSpeedVerte;
+
+    [Header("Parameters")]                                                            
     [SerializeField] private int _activeChunksCount = 5; // créer une varible int pour le nombre de chunk que je veux devant moi
     [SerializeField] private int _behindChunksCount = 2; // créer une varible int pour le nombre de chunk que je veux derriere moi (behind = derrière)
     [SerializeField] private bool _preventSameChunkGeneration = true; // créer une varible bool pour activer ou pas mon amelioration de random
@@ -76,8 +83,12 @@ public class ObstacleGenerator : MonoBehaviour
 
     private bool _enabled; // je declare une variable de type bool nommée _enabled, pas besoin de l'initialiser a false, car par default un bool est initialisé a false
 
+
+
     private void Start()
     {
+        _translationSpeedCurrent = _translationSpeedVerte; // j'initialise _translationSpeedCurrent déclarée plus haut
+
         // Initialisation de la liste _activeChunks
         // Ici, on cree reellement une nouvelle liste vide en memoire
         // et on assigne cette liste a la variable _activeChunks
@@ -95,19 +106,29 @@ public class ObstacleGenerator : MonoBehaviour
 
         // je j'ecoute le moment ou le jeu passe en "GameState"
         GameEventService.OnGameState += HandleGameState; // je m'abonne à mon GameEventService.cs qui recupère la valeur contenu dans "OnGameState" quand elle est envoyée, alors j'exécute la fonction "HandleGameState"
+        GameEventService.OnColorPiste += SpeedPerPisteColor; // je m'abonne à mon GameEventService.cs qui recupère la valeur contenu dans "OnColorPiste" quand elle est envoyée, alors j'exécute la fonction "SpeedPerColorPiste"
     }
+
+
+
 
     // je me suis abonner juste au dessus donc je DOIS me desabonner
     private void OnDestroy()
     {
         GameEventService.OnGameState -= HandleGameState; // je me désabonne de mon GameEventService.cs
+        GameEventService.OnColorPiste -= SpeedPerPisteColor;
     }
+
+
+
 
     // je créer cette méthode qui dit que c'est enabled si je rentre dans le State Enter()
     private void HandleGameState(bool enterState) // si _enabled = false, je sors du state
     {
         _enabled = enterState; // _enabled sert à ton script pour contrôler si le défilement des chunks doit être actif ou non.
     }
+
+
 
     // gere la position d'instantiation de mes chhunk
     private void AddBaseChunks()
@@ -131,9 +152,12 @@ public class ObstacleGenerator : MonoBehaviour
 
     }
 
-	//------------------------
+
+
+
+    //------------------------
     // ajouter un chunk
-	//------------------------
+    //------------------------
     private void AddChunk(Vector3 position)
     {
 
@@ -176,6 +200,35 @@ public class ObstacleGenerator : MonoBehaviour
 
     }
 
+
+
+    // méthode qui donne la vitesse de translation des chunk, en fonction de la couleur de la piste
+    // --------------------------------------
+    private void SpeedPerPisteColor(string pisteColor)
+    {
+
+        if (pisteColor == "Verte")
+        {
+            _translationSpeedCurrent = _translationSpeedVerte;
+        }
+        else if (pisteColor == "Bleu")
+        {
+            _translationSpeedCurrent = _translationSpeedBleu;
+        }
+        else if (pisteColor == "Rouge")
+        {
+            _translationSpeedCurrent = _translationSpeedRouge;
+        }
+        else // (pisteColor == "Noire")
+        {
+            _translationSpeedCurrent = _translationSpeedNoire;
+        }
+        // Debug.Log("Piste : " + pisteColor);
+        // Debug.Log("_pointSecondPisteCurrent : " + _pointSecondPisteCurrent);
+    }
+
+
+
     private void Update()
     {
         // controle si je lance le defilement de mes chunk
@@ -190,13 +243,19 @@ public class ObstacleGenerator : MonoBehaviour
             // Déplace l'objet "chunk" vers l'arrière (axe Z négatif)
             // à une vitesse définie par _translationSpeed,
             // en tenant compte du temps écoulé entre deux frames (Time.deltaTime), rend le mouvement indépendant du framerate
-            chunk.transform.Translate((Vector3.back * _translationSpeed * Time.deltaTime));
+            chunk.transform.Translate((Vector3.back * _translationSpeedCurrent * Time.deltaTime));
 
         }
 
         UpdateChunks(); // <-- appel ici
 
     }
+
+
+
+
+
+
 
     // méthode qui va me permettre de générer automatiquement les nouveau chunks
     // sachant que je peux toujours 5 chunks actif et que un chunk considérer comme behinds est un chunk qui est passéee derriere le player

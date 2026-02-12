@@ -120,7 +120,7 @@ public class AvalancheController : MonoBehaviour
         // vitesse que je devrais * Time.deltaTime pour que ce soit seconde/frame
         float vitesseAutoAvalanche = 0; // je declare et initialise
         vitesseAutoAvalanche = pourcentProgressAvalAuto / timeAutoProgressAvalCurrent * Time.deltaTime; // Time.deltaTime temps ecoulé entre 2 frames, Time.deltaTime est toujours exprimé en secondes.
-        Debug.Log("VitesseAval" + vitesseAutoAvalanche);
+        // Debug.Log("VitesseAval" + vitesseAutoAvalanche);
         _currentAvalanche += vitesseAutoAvalanche; // abreviation pour dire : _currentAvalanche = _currentAvalanche + vitesseAutoAvalanche;
 
         // je donne _currentAvalanche au GameEventService.cs, je l'Invoke

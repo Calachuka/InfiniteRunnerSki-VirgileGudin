@@ -584,10 +584,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorPisteController
   _pisteColorCurrent: 
   _timeSecondPisteVerte: 0
-  _timeSecondPisteBleu: 5
-  _timeSecondPisteRouge: 10
-  _timeSecondPisteNoire: 15
-  _gameTimeController: {fileID: 1928676851}
+  _timeSecondPisteBleu: 10
+  _timeSecondPisteRouge: 20
+  _timeSecondPisteNoire: 30
 --- !u!1 &1249643643
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,6 +631,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd353ec4f70709d4cacfe0511a1454a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AvalancheController
+  _avalancheDistance: 100
+  _pourcentProgressAvalAuto: 1
+  _timeAutoProgressAvalVerte: 8
+  _timeAutoProgressAvalBleu: 6
+  _timeAutoProgressAvalRouge: 4
+  _timeAutoProgressAvalNoire: 2
+  _avalColissionDamageVerte: 5
+  _avalColissionDamageBleu: 10
+  _avalColissionDamageRouge: 20
+  _avalColissionDamageNoire: 30
 --- !u!1 &1576312440
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +690,10 @@ MonoBehaviour:
   - {fileID: 991749304807751803, guid: 79633f2c907c8484fa33fff27f523a7a, type: 3}
   - {fileID: -5455758982005985519, guid: 2e0c42204544adb4e8c4c12b1c8b6cdc, type: 3}
   - {fileID: 1252672230723314125, guid: 924b5c5afc90c37408ae49a2d14be5e2, type: 3}
-  _translationSpeed: 6
+  _translationSpeedVerte: 4
+  _translationSpeedBleu: 6
+  _translationSpeedRouge: 8
+  _translationSpeedNoire: 10
   _activeChunksCount: 7
   _behindChunksCount: 2
   _preventSameChunkGeneration: 1
@@ -945,7 +957,7 @@ GameObject:
   - component: {fileID: 2105078252}
   - component: {fileID: 2105078254}
   m_Layer: 0
-  m_Name: TestCode
+  m_Name: TestCodeNE PAS JETER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

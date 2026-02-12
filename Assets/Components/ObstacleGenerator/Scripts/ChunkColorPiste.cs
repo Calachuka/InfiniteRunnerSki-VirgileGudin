@@ -56,8 +56,8 @@ public class ChunkColorPiste : MonoBehaviour
 
         _renderer.material = _materialCurrent; // C’EST ÇA QUI MANQUAIT
 
-        Debug.Log("Piste : " + pisteColor);
-        Debug.Log("Material : " + _materialCurrent);
+        Debug.Log("PisteColor : " + pisteColor);
+        Debug.Log("MaterialColor : " + _renderer.material);
 
     }
     
