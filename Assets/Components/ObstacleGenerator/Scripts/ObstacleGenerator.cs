@@ -87,6 +87,7 @@ public class ObstacleGenerator : MonoBehaviour
 
     private void Start()
     {
+
         _translationSpeedCurrent = _translationSpeedVerte; // j'initialise _translationSpeedCurrent déclarée plus haut
 
         // Initialisation de la liste _activeChunks
