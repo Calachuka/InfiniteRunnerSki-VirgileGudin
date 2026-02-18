@@ -1,4 +1,3 @@
-using Components.StateMachine;
 using UnityEngine;
 
 public class AvalancheController : MonoBehaviour

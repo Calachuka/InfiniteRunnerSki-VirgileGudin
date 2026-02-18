@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using Components.Data;
 using Test;
 using UnityEngine;
@@ -26,7 +27,12 @@ namespace Components.StateMachine
                               // instance que je créer dans le script "StateMachineController.cs"
     {
 
-        public State CurrentState { get; private set; } // un Get (Getter) c'est comme une variable mais seule la classe "StateMachine" peut le lire
+        public State CurrentState { get; private set; } // Ce n’est PAS une variable classique, C’est une propriété auto-implémentée.
+                                                        // ca créer un variable public	
+                                                        // public : Tout le monde peut lire
+                                                        // get;	: Autorise la lecture
+                                                        // private set;	: Seule la class dans la quelle elle est declarée peut la modifier
+
 
         public void ChangeState(State newState) // je créer une methode ChangeState qui prend comme argument un type "State" que je nomme "newState"
         {

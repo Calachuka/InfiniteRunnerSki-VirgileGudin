@@ -4,9 +4,6 @@ public class GameTimeController : MonoBehaviour
 {
     
     private float _gameTime = 0f; // 1- je déclare une variable privée
-    // puis je la rend public en lecture, pour que les autres scripts puissent la lire et je nomme cette varaible GameTimer
-    public float GameTime => _gameTime;
-
 
     private bool _isGameStart = false;  // je créer une variable pour lancer mon score que quand mon jeu est lancé
 

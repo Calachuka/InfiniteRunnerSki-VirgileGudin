@@ -162,7 +162,7 @@ public class ObstacleGenerator : MonoBehaviour
     private void AddChunk(Vector3 position)
     {
 
-        // j'ameiore mon system de random pour pas qu'il y ai pas 2 fois de suite le meme chunk
+        // j'ameliore mon system de random pour pas qu'il y ai pas 2 fois de suite le meme chunk
         var newChunkIndex = Random.Range(0, _chunkPrefabs.Length); // en random de entre 0 et la longueur de ma liste "_chunkPrefabs.Length"
 
         if (_preventSameChunkGeneration) // ce if verifie si j'ai bien coché cette amerioration dans mon inspector
