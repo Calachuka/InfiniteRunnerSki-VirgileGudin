@@ -910,7 +910,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7563ea93d493d4ca3310314b891de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleController
-  foodList: []
+  _chunkPrefabs: []
+  collectibleList:
+  - {fileID: 3393605318962231735, guid: d06b77aad75d316449d7916aa904c233, type: 3}
+  - {fileID: 3393605318962231735, guid: 22c2757e06567d04cb85b85bfd2001d9, type: 3}
+  - {fileID: 3393605318962231735, guid: 0596a3fa73c0d7e47b707c83a6b0af06, type: 3}
+  positionCollectibleList:
+  - {x: 0, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
 --- !u!1 &2089879830
 GameObject:
   m_ObjectHideFlags: 0

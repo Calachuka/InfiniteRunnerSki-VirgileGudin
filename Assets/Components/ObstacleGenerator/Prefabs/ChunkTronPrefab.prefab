@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8427101151008001320}
   - component: {fileID: 1252672230723314125}
+  - component: {fileID: 2310997215336472653}
   m_Layer: 0
   m_Name: ChunkTronPrefab
   m_TagString: Untagged
@@ -47,6 +48,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkController
   _endAnchor: {fileID: 7437380885987333583}
+--- !u!114 &2310997215336472653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595369865392896058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7563ea93d493d4ca3310314b891de4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleController
+  collectibleList:
+  - {fileID: 3393605318962231735, guid: d06b77aad75d316449d7916aa904c233, type: 3}
+  - {fileID: 3393605318962231735, guid: 22c2757e06567d04cb85b85bfd2001d9, type: 3}
+  - {fileID: 3393605318962231735, guid: 0596a3fa73c0d7e47b707c83a6b0af06, type: 3}
+  positionCollectibleList:
+  - {x: 0, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
 --- !u!1 &2503057344738107700
 GameObject:
   m_ObjectHideFlags: 0

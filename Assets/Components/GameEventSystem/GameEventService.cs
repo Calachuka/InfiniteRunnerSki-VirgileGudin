@@ -5,6 +5,11 @@ using UnityEngine.SocialPlatforms.Impl;
 public static class GameEventService // cet eventsystem ne va pas etre un script monobehavior, mais une classe static, une classe qui est accessible n'importe ou dans le jeu et existe tout le temps
 {
     public static Action OnCollision; // pour declarer un evenement en c# utiliser les Action static  
+    public static Action OnCollisionCollectible; // pour dire que je touché un gameObject de type collectible
+    public static Action OnCollisionCollectibleSucreDOrge; // pour dire que je touché un gameObject de type collectible SucreDOrge
+    public static Action OnCollisionCollectibleCadeau; // pour dire que je touché un gameObject de type collectible Cadeau
+    public static Action OnCollisionCollectibleBoule; // pour dire que je touché un gameObject de type collectible Boule
+
     public static Action<int> OnPlayerLifeUpdated; // pour declarer un evenement en c# utiliser les Action static
                                                    // C’est un événement basé sur un delegate, plus précisément :
                                                    // Un event global (statique) utilisant Action<T>
