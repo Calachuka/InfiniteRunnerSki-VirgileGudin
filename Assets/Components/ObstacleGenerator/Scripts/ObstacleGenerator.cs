@@ -12,11 +12,16 @@ public class ObstacleGenerator : MonoBehaviour
 {
     [Header("Prefabs chunk portionObstacle ")]
     // ----- explication de cette ligne
-    // [SerializeField] private GameObject[] _ChunkPrefabs; // variable et champ pour indiquer PortionObstaclePrefab, il va y en avoir plusieur donc [] pour en faire un array
-    // ensuite vu que c'est un prefab je devrait faire  _potionPrefab.GetComponent pour recupérer son script
+    // [SerializeField] private GameObject[] _ChunkPrefabs; // variable et champ pour indiquer PortionObstaclePrefab (chunk), il va y en avoir plusieur donc [] pour en faire un array
     // il existe une methode qui permet de le recupérer directement, a la place de "GameObject", mettre directement le nom du script que je veux récupérer ChunkController
     // et glisser dans la case apparut de dans l'inspector, le prefab contenant le script ChunkController.cs, prefab qui n 'est pourtant pas encore instancier dans ma scene 
-    [SerializeField] private ChunkController[] _chunkPrefabs; // array de mes chunks, avantage m'evite de faire par la suite _potionPrefab.GetComponent pour recupérer le script et plus besoin de mettre de script ChunkController.cs a mes autres prefabs
+    [SerializeField] private ChunkController[] _chunkPrefabs; // array de mes chunks, avantage m'evite de faire par la suite _portionPrefab.GetComponent pour recupérer le script et plus besoin de mettre de script ChunkController.cs a mes autres prefabs
+                                                              // Stocker un tableau de prefabs qui contiennent déjà le script ChunkController,
+                                                              // et te permettre d’accéder directement à ce script sans faire de GetComponent (_portionPrefab.GetComponent)
+                                                              // Pourquoi tu peux glisser un prefab non instancié ?
+                                                              // Un prefab est une asset 
+                                                              // Il peut être référencé même s’il n’est pas encore dans la scène
+                                                              // Unity sérialise la référence
 
     [Header("Speed Parameters")]
     [SerializeField] private float _translationSpeedVerte = 3f; // vitesse de translation en piste Verte
@@ -31,6 +36,14 @@ public class ObstacleGenerator : MonoBehaviour
     [SerializeField] private int _activeChunksCount = 5; // créer une varible int pour le nombre de chunk que je veux devant moi
     [SerializeField] private int _behindChunksCount = 2; // créer une varible int pour le nombre de chunk que je veux derriere moi (behind = derrière)
     [SerializeField] private bool _preventSameChunkGeneration = true; // créer une varible bool pour activer ou pas mon amelioration de random
+
+    [Header("Collectibles list")]
+    //[SerializeField] private List<GameObject> collectibleList; // liste de mes Collectibles qui vont etre ensuite randomisé par la fonction RandomizeCollectible()
+    public List<GameObject> collectibleList; // liste de mes Collectibles qui vont etre ensuite randomisé par la fonction RandomizeCollectible()
+
+    [Header("Position Collectibles")]
+    // [SerializeField] private List<Vector3> positionCollectibleList; // liste de mes Position qui vont etre ensuite randomisé par la fonction RandomizePositionCollectible()
+    public List<Vector3> positionCollectibleList; // liste de mes Position qui vont etre ensuite randomisé par la fonction RandomizePositionCollectible()
 
     // Declaration de la variable _activeChunks...
     // Liste qui contiendra tous les chunks actuellement actifs dans la scène
@@ -78,6 +91,7 @@ public class ObstacleGenerator : MonoBehaviour
         }
     }
     */
+
 
     private int _lastChunkIndex = 0; // je créer une variable pour recuperer le dernier nun de chunk instantiate // pour que dans le random il n' y ai pas 2 fois de suite le meme chunk
 
@@ -191,13 +205,15 @@ public class ObstacleGenerator : MonoBehaviour
                                                                                        // "transform" seul permet qu'il devient enfant de l'obj courant ChunkController
                                                                                        // puis stocke la référence dans la variable "chunk"
 
+        SpawnCollectible(chunk); // je fais spawnner un collectible sur mon chunk actuel grace a la méthode "SpawnCollectible()" créer plus bas
+
         chunk.transform.position = position; // Positionne le chunk instancie a l endroit specifie par la variable "position"
                                              // "transform" fait reference a la position, rotation et echelle de l objet dans la scene
                                              // En assignant ".position", on deplace l objet a la position precise souhaitée
 
         _activeChunks.Add(chunk);// Ici, tu ajoutes le chunk que tu viens d'instancier dans ta liste _activeChunks.
                                  // c'est essentiel car dans Update(), tu as un foreach :   
-                                 //Si tu ne l'ajoutes pas a la liste, _activeChunks reste vide et la boucle ne fera rien, donc ton prefab ne bougera jamais.
+                                 // Si tu ne l'ajoutes pas a la liste, _activeChunks reste vide et la boucle ne fera rien, donc ton prefab ne bougera jamais.
 
     }
 
@@ -309,6 +325,28 @@ public class ObstacleGenerator : MonoBehaviour
             // AddChunk instancie un nouveau chunk à la position de l'ancre de fin du dernier chunk actif
             AddChunk(LastChunk.EndAnchor.position);
         } 
+    }
+
+
+    // methode pour instancier mes collectibles sur un chunk
+    // elle instancie 1 collectible en Position locale aléatoire sur le chunk
+    private void SpawnCollectible(ChunkController chunk)
+    {
+        if (collectibleList == null || collectibleList.Count == 0) // verif pour instancier des collectible que si un chunk existe dans la list
+            return;
+
+        if (positionCollectibleList == null || positionCollectibleList.Count == 0)
+            return;
+
+        // Choisir un prefab de collectible aléatoire
+        GameObject collectiblePrefab = collectibleList[Random.Range(0, collectibleList.Count)];
+
+        // Instancier le collectible en tant qu'enfant du chunk
+        GameObject collectible = Instantiate(collectiblePrefab, chunk.transform); 
+
+        // Position locale aléatoire sur le chunk
+        collectible.transform.localPosition =
+            positionCollectibleList[Random.Range(0, positionCollectibleList.Count)];
     }
 
 }

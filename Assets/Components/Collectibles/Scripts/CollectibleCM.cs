@@ -26,7 +26,7 @@ public abstract class CollectibleCM : MonoBehaviour
 
         // je fais apparaitre un nouveau collectible aléatoirement grace au code de ma fonction SpawnFood() qui se trouve dans mon script FoodManager.cs
         // car j'y ait definit variable static (dit : singleton) "variable static FoodManager instance;" qui peut etre appellée dans tous les script du jeu, je mets le nom du script dans lequel on se trouve "FoodManager" et je la nomme instance
-        CollectibleController.instance.SpawnCollectible();
+        // ObstacleGenerator.instance.SpawnCollectible();
 
         Destroy(gameObject); // puis je detruis l'ancien fruit
     }
