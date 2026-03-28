@@ -5,6 +5,10 @@ public class SucreDOrgeCollectible : CollectibleCM // remplacer Monobehavior ( c
     public override void Collected() // ceci s'applle overrider la fonction, j'ajoute le mot "override"
     {
         base.Collected(); // me permet de garder ma fonction Eated de base
-                      // et j'y ajoute mon code supplementaire par au dessus ou en dessous
+                          // et j'y ajoute mon code supplementaire par au dessus ou en dessous
+
+        GameEventService.OnCollisionCollectibleSucreDOrge?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible SucreDOrge
+
+        Debug.Log("Sucre d'orge ramassé");
     }
 }

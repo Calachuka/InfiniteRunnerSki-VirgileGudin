@@ -27,19 +27,21 @@ public class PlayerMovementController : MonoBehaviour
 
     [Header("Components")] // gere ici les components relier a script
     [SerializeField] private Animator _animator; // je créer une variable donc un champ pour indiquer mon animator au code
-    [SerializeField] private PlayerCollisionController _collisionController; // je créer un variable qui va appeler le componant, le script "PlayerCollisionController" que je nomme "_collisionController"
-                                                                            // ATTENTION je dois gliise rmon Player dans cette case dans mon isnpector
+    [SerializeField] private PlayerCollisionController _collisionController; // je créer un variable qui va appeler le componant, le script "PlayerCollisionController.cs" que je nomme "_collisionController"
+                                                                            // ATTENTION je dois glisser mon Player dans cette case dans mon inspector
     [Header("debug")] // pour vois les debug
     [SerializeField] private bool _isJumping; // ce bool va me permettre de verifier si je suis pas deja dans un saut, me créer un case dans l'inspector, qui se coche quand mon booleen est en saut
     [SerializeField] private bool _isSliding; // ce bool va me permettre de verifier si je suis pas deja dans un deplacement, me créer un case dans l'inspector, qui se coche quand mon booleen est en deplacement
     [SerializeField] private bool _isSlidingDown; // ce bool va me permettre de verifier si je suis pas deja dans un deplacement, me créer un case dans l'inspector, qui se coche quand mon booleen est en isSlidingDown
     [SerializeField] private int _CurrentLaneIndex = 1; // me variable qui m'initialise mon player a la lane 1 soit la lane du milieu
 
-    private const string JUMP_PARAMETER = "IsJumping";
-    private const string SLIDE_DOWN_PARAMETER = "IsSlidingDown";
-    private const string GROUNDED_PARAMETER = "Grounded";
+    // les différent états que j'ai créé dans mon animator
+    private const string JUMP_PARAMETER = "IsJumping"; // créer dans mon animator il est de type bool
+    private const string SLIDE_DOWN_PARAMETER = "IsSlidingDown"; // créer dans mon animator il est de type bool
+    private const string GROUNDED_PARAMETER = "Grounded"; // créer dans mon animator il est de type trigger
+    private const string COLLISION_PARAMETER = "Collision"; // créer dans mon animator il est de type bool
 
-    private void Update() // j'utilise Update car je veux chequer une permanence cet aspect
+    private void Update() // j'utilise Update car je veux chequer en permanence cet aspect
     {
         // INPUT "SAUT"
         if (Input.GetKeyDown(KeyCode.UpArrow)) // ancien systeme d'input, ici : quand j'appuie sur "UpArrow" je saute en deplacant mon player vers le haut (Y)
@@ -48,7 +50,7 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         // INPUT "deplacement Gauche"
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) // si j'apuye sur LeftArrow
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) // si j'appuye sur LeftArrow
         {
             if (_isSliding) //si "isSliding" = true, ce bool va me permettre de verifier si je suis pas deja dans un deplacement, pour eviter que ca lance plusieur deplacement si je mattraque la touche, ca terminera bien la coroutine avnt
             { 
@@ -121,7 +123,7 @@ public class PlayerMovementController : MonoBehaviour
 
 
         // -------- montée de mon saut -------
-        // je fais une boucle while, qui execute tant que sa condition n 'est pas remplie
+        // je fais une boucle while, qui execute tant que sa condition n'est pas remplie
         while (JumpTimer < halfJumpDuration)
         {
             _isJumping = true ; // veux dire que je suis en train de sauter, ceci pour verifier que je suis bien dans une boucle de saut
@@ -144,6 +146,7 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         _animator.SetBool(JUMP_PARAMETER, false); // donc quand on a fini de sauter, je dis à mon animator de mettre "IsJumping" en false et donc de passer a l'anim fall
+
 
         // -------- descente de mon saut -------
         // je réinitalise mon JumpTimer, car il etait incrementé dans le while de montée du saut
@@ -233,6 +236,52 @@ public class PlayerMovementController : MonoBehaviour
         _collisionController.ShrinkCollider(false); // mets la methode public "ShrinkCollider" a false, elle se situe dans mon script "PlayerCollisionController
         _animator.SetBool(SLIDE_DOWN_PARAMETER, false); // a la fin de mon animator "SLIDE_DOWN_PARAMETER" est false
         _isSlidingDown = false; // me permet de vérifier je suis deja en train de faire le mouvement, pour que le joueur ne puisse en lancer directement un autre
+    }
+
+    // gestion animation de collision
+    // ------------------------------
+    /*
+    1) ajouter cette anim "pose collision" dans mon animator
+2) dans animator créer un parametre bool nommé "Collision" 
+(bool car je vais récupérer mon parametre "OnCollision" de mon "GameEventService.cs"
+3) dans animator faire mes transitions :
+	- de la "pose de base" a la "pose collision"
+		(condition : collision = true) 
+	- de la "pose collision" a la "pose de base" 
+		(condition : collision = false)
+4) puis parametrer ce cette collision en code :
+dois-je plutot la mettre dans PlayerMovementController.cs ou dans PlayerCollisionController.cs ?
+imaginons que je le mets dans le "PlayerCollisionController.cs" je devais :
+5) créer une variable en entete pour indiquer l'animator
+[SerializeField] private Animator _animator; // je créer une variable donc un champ pour indiquer mon animator au code
+6) en entete créer une constante du parametre de mon animator
+private const string COLLISION_PARAMETER = "Collision"; // créer dans mon animator il est de type bool
+7) et puis j'ai mis ce code : 
+    */
+    private void OnEnable()
+    {
+        GameEventService.OnCollisionObstacle += OnCollisionObstacleAnimation;  // je m'abonne, (ecoute) l'event OnCollisionObstacle, et lis la fonction "OnCollisionObstacleAnimation()"
+
+    }
+    // je créer une coroutine pour laisser le temps a mon animation d'etre lue
+    private void OnCollisionObstacleAnimation()
+    {
+        StartCoroutine(CollisionCoroutine());
+    }
+
+    private IEnumerator CollisionCoroutine()
+    {
+        _animator.SetBool(COLLISION_PARAMETER, true); // permet de mettre le parametre "collision" a true
+
+        yield return new WaitForSeconds(0.3f);
+
+        _animator.SetBool(COLLISION_PARAMETER, false); // permet de mettre le parametre "collision" a false
+    }
+
+    private void OnDestroy()
+    {
+        GameEventService.OnCollisionObstacle -= OnCollisionObstacleAnimation;  // je me desabonnes
+
     }
 
 }

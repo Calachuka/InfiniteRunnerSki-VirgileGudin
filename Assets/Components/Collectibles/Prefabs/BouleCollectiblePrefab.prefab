@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6869648010853391436}
   - component: {fileID: 3958509250500483569}
   - component: {fileID: 4948221412242712845}
+  - component: {fileID: 2121001259177916402}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -111,6 +112,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2121001259177916402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2786623809009543503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6a45f96dfe8d34db517369474d8d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BouleCollectible
 --- !u!1 &3393605318962231735
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +133,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7057284169994886819}
-  - component: {fileID: -8904771181348867074}
   m_Layer: 0
   m_Name: BouleCollectiblePrefab
   m_TagString: Untagged
@@ -144,15 +156,3 @@ Transform:
   - {fileID: 7605075085092944992}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8904771181348867074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393605318962231735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c6a45f96dfe8d34db517369474d8d26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BouleCollectible

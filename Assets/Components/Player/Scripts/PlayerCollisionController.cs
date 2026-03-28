@@ -37,7 +37,9 @@ public class PlayerCollisionController : MonoBehaviour
                                                                                                                       // "OverlapSphereNonAlloc" exige une parametre suplementaire, un array du nombre de collider que je veux lire dans mon ca 1 seul suffit
                                                                                                                       // "hitCount", recupére ce nombre
 
-        if (hitCount > 0 && _isHit == false) // si _isHit est faux (pas de colision) et que hitCount > 0 (tout a coup collision)
+        // faire en sorte que je n 'ai pas une collision a chaque frame, mais qu'une seule quand je tappe mon obstacle
+        // je créer un bool pour verifier quand je suis en colision et quand je n'y suis plus
+        if (hitCount > 0 && _isHit == false) // si _isHit est faux (pas de colision) et que tout a coup hitCount > 0 (tout a coup collision)
         {
 
             // Debug.Log("Player take damage");
@@ -55,35 +57,30 @@ public class PlayerCollisionController : MonoBehaviour
             // faire une boucle, pour parcourir ce tableau
             for (int i = 0; i < hitCount; i++)
             {
+                Debug.Log("Obj detecté :" + _hitResults[i].name); // permet d'afficher dans ma console le nom de de l'obj qui rentre dans la sphere (Physics.OverlapSphereNonAlloc)
+
                 CollectibleCM collectible = _hitResults[i].GetComponent<CollectibleCM>(); // je créer une variable nommée "collectible" de type "CollectibleCM" variable créer par moi meme (custom class)
-                                                                                          // pour voir si je peux récupérer le script "CollectibleCM" sur le gameObjet rentré dans avec le "colider" de mon player Physics.OverlapSphereNonAlloc  
+                                                                                          // pour voir si l'obj qui rentre dans la sphere (Physics.OverlapSphereNonAlloc) à le script "CollectibleCM"
+                                                                                          // car L’héritage (class mere) fonctionne avec GetComponent, Unity va trouver aussi les classes enfants.
 
+                Obstacle obstacle = _hitResults[i].GetComponent<Obstacle>(); // je créer une variable nommée "obstacle" de type "Obstacle" variable créer par moi meme (custom class)
+                                                                             // pour voir si l'obj qui rentre dans la sphere (Physics.OverlapSphereNonAlloc) à un script "Obstacle"
+                // Si c'est un collectible
                 if (collectible != null) // Si le gameObject à le script CollectibleCM (!= null), c'est un collectible
+                {                   
+                    collectible.Collected(); // j'execute la méthode Collected() du script mis sur collectible ramassé 
+                                            // qui grace la l'heritage des class mere fait différentes choses suivant le collectible ramassé
+                    
+                }
+                // Si c'est un obstacle
+                else if (obstacle != null) // Si le gameObject à le script Obstacle (!= null), c'est un obstacle script vide que j'ai mis a tous mes obsacles
                 {
-                    collectible.Collected();
-                    GameEventService.OnCollisionCollectible?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible
-
-                    if (_hitResults[i].GetComponent<SucreDOrgeCollectible>())
-                    {
-                        GameEventService.OnCollisionCollectibleSucreDOrge?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible SucreDOrge
-                    }
-                    else if (_hitResults[i].GetComponent<CadeauCollectible>())
-                    {
-                        GameEventService.OnCollisionCollectibleCadeau?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible Cadeau
-                    }
-                    else if (_hitResults[i].GetComponent<BouleCollectible>())
-                    {
-                        GameEventService.OnCollisionCollectibleBoule?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible Boule
-                    }
-                    else
-                    {
-                        Debug.Log("le collectible n'a pas de script BouleCollectible, CadeauCollectible ou SucreDOrgeCollectible");
-                    }
+                    GameEventService.OnCollisionObstacle?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un obstacle 
                 }
 
                 else
                 {
-                    Debug.Log("ce n'est pas un collectible car il n'as pas de script CollectibleCM");
+                    Debug.Log("ce N'EST ni un Obstacle, ni un collectible car il n'as pas de script Obstacle ou CollectibleCM, ");
                 }
             }
         }
@@ -92,6 +89,7 @@ public class PlayerCollisionController : MonoBehaviour
             _isHit = false; // redevient faux
         }
 
+        
 
     }
 

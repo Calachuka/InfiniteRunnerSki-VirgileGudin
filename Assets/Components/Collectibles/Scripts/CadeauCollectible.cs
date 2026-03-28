@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class CadeauCollectible : CollectibleCM // remplacer Monobehavior ( car de base chacun de nos scripts herite de Monobehavior, mettre a la place Food (le nom de ma class mere)
@@ -6,5 +7,9 @@ public class CadeauCollectible : CollectibleCM // remplacer Monobehavior ( car d
     {
         base.Collected(); // me permet de garder ma fonction Eated de base
                           // et j'y ajoute mon code supplementaire par au dessus ou en dessous
+
+        GameEventService.OnCollisionCollectibleCadeau?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible Cadeau
+
+        Debug.Log("Cadeau ramassé");
     }
 }

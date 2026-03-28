@@ -19,9 +19,10 @@ using UnityEngine;
 public abstract class CollectibleCM : MonoBehaviour
 {
 
-    // cette méthode Eated() ressence tous les points communs a tous les gameObject bouffe
+    // cette méthode Collected() ressence tous les points communs a tous les gameObject collectibles
     public virtual void Collected() // ajouter le mot "virtual" pour dire que cette fonction puisse etre modifiée par les script enfant
     {
+        GameEventService.OnCollisionCollectible?.Invoke(); // alors le transmets a mon GameEventService que j'ai touché un collectible
         print("collecté !!!");
 
         // je fais apparaitre un nouveau collectible aléatoirement grace au code de ma fonction SpawnFood() qui se trouve dans mon script FoodManager.cs

@@ -1,6 +1,4 @@
-using System.Net.Sockets;
 using Components.Data;
-using Test;
 using UnityEngine;
 
 // --- BUT ---
@@ -147,8 +145,8 @@ namespace Components.StateMachine
         public override void Enter()
         {
             GameEventService.OnGameState?.Invoke(true); // je previens le "GameEventService.cs" que je viens de lancer le GameState
-            // je m'abonne a OnCollision (dans mon eventsystem qui est classe static)
-            GameEventService.OnCollision += HandleCollision; // += c'est un delegat, j'ecoute le "GameEventService.cs" pour lancer HandleCollision que j'ai ecrite plus bas à chaque collision
+            // je m'abonne a OnCollisionObstacle (dans mon eventsystem qui est classe static)
+            GameEventService.OnCollisionObstacle += HandleCollision; // += c'est un delegat, j'ecoute le "GameEventService.cs" pour lancer HandleCollision que j'ai ecrite plus bas à chaque collision
             _currentLife = LevelParameters.PlayerLife; // ma vie est égale a mon parametre PlayerLife de LevelParameters créer dans mon scriptableObject "SOLevelParameters.cs"
  
         }
@@ -163,7 +161,7 @@ namespace Components.StateMachine
         public override void Exit()
         {
             GameEventService.OnGameState?.Invoke(false); // je previens le "GameEventService.cs" que je viens de quitter le GameState
-            GameEventService.OnCollision -= HandleCollision; // je me desabonne
+            GameEventService.OnCollisionObstacle -= HandleCollision; // je me desabonne
             
         }
 

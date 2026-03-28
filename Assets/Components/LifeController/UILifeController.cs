@@ -10,7 +10,7 @@ public class UILifeController : MonoBehaviour
     private void Start()
     {
         SetLife(_levelParameters.PlayerLife); // je transmet _levelParameters.PlayerLife à ma fonction "SetLife". SetLife methode definit plus bas, qui me sert a afficher le nombre de vie
-        // a mon start, je m'abonne a OnCollision (dans mon eventsystem qui est classe static)
+        // a mon start, je m'abonne a OnPlayerLifeUpdated (dans mon eventsystem qui est classe static)
         GameEventService.OnPlayerLifeUpdated += SetLife; // += c'est un delegat, pour executer une methode (fonction) HandleCollision que j'ai ecrite plus bas
     }
 

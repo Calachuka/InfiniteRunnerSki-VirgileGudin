@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7057284169994886819}
-  - component: {fileID: 6392683565979923540}
   m_Layer: 0
   m_Name: CadeauCollectiblePrefab
   m_TagString: Untagged
@@ -33,18 +32,6 @@ Transform:
   - {fileID: 6732635178551443012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6392683565979923540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393605318962231735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f380730e5446f9447b24908dad187ea4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CadeauCollectible
 --- !u!1 &4649220452810187604
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +44,7 @@ GameObject:
   - component: {fileID: 8178145259566425968}
   - component: {fileID: 777730370658532325}
   - component: {fileID: 5730577304792456405}
+  - component: {fileID: 5045642181777385134}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -156,3 +144,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5045642181777385134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4649220452810187604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f380730e5446f9447b24908dad187ea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CadeauCollectible
